@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [inputMinutes, setInputMinutes] = useState("0")
+  const [inputMinutes, setInputMinutes] = useState("0");
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [presentationMode, setPresentationMode] = useState(false)
+  const [presentationMode, setPresentationMode] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
 
   useEffect ( () => {
     let timer: NodeJS.Timeout
@@ -66,8 +67,9 @@ export default function Home() {
       )}
 
       {/* Time Display */}
-      <h2 className="text-8xl md:text-9xl font-bold">
-        {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+      <h2 className={`text-8xl md:text-9xl font-bold ${time === 0 ? "animate-pulse text-red-600" : "text-white"}`}>
+      {time === 0 && hasStarted ? "TIME OUT" :`${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`}
+        {/* {minutes}:{seconds < 10 ? `0${seconds}` : seconds} */}
       </h2>
 
       {/* Back Button */}
@@ -96,7 +98,7 @@ export default function Home() {
       {/* Buttons */}
       <div className="flex gap-4 px-1">
         <button 
-          onClick={() => setIsRunning(true)} 
+          onClick={() => {setIsRunning(true); setHasStarted(true);}} 
           className="px-6 py-3 bg-green-600 rounded-xl text-xl cursor-pointer hover:bg-green-700 transition">
             start
         </button>
@@ -108,7 +110,7 @@ export default function Home() {
         </button>
 
         <button 
-          onClick={() => {setIsRunning(false); setTime(0)}} 
+          onClick={() => {setIsRunning(false); setTime(0); setHasStarted(false)}} 
           className="px-6 py-3 bg-red-600 rounded-xl text-xl cursor-pointer hover:bg-red-700 transition">
             Reset
         </button>
